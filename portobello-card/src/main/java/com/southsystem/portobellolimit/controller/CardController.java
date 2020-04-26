@@ -1,4 +1,4 @@
-package com.southsystem.portobellolimit;
+package com.southsystem.portobellolimit.controller;
 
 import com.southsystem.portobellolimit.model.Card;
 import com.southsystem.portobellolimit.service.CardService;
