@@ -1,0 +1,24 @@
+server:
+  port: 8081
+spring:
+  cloud:
+    stream:
+      bindings:
+        personCreated:
+          destination: personCreated.exchange
+          binder: rabbit
+          group: person-api
+      binders:
+        rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: rabbitmq
+                port: 5672
+                username: guest
+                password: guest
+                virtualhost: /
+  data:
+    mongodb:
+      uri: mongodb://mongodb:27017/portobello
