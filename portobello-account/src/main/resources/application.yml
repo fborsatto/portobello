@@ -1,0 +1,41 @@
+server:
+  port: 8082
+spring:
+  cloud:
+    stream:
+      bindings:
+        personCreated:
+          destination: personCreated.exchange
+          binder: rabbit
+          group: account-api
+        accountCreated:
+          destination: accountCreated.exchange
+          binder: rabbit
+          group: account-api
+      binders:
+        rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: rabbitmq
+                port: 5672
+                username: guest
+                password: guest
+                virtualhost: /
+      default:
+        contentType: application/json
+        rabbit:
+          bindings:
+            personCreated:
+              consumer:
+                autoBindDlq: true
+                dlqTtl: 60000
+                dlqDeadLetterExchange:
+                requeueRejected: true
+                republishToDlq: true
+  data:
+    mongodb:
+      uri: mongodb://mongodb:27017/portobello
+default:
+  agency: 1001
