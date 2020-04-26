@@ -14,7 +14,7 @@ spring:
           environment:
             spring:
               rabbitmq:
-                host: localhost
+                host: rabbitmq
                 port: 5672
                 username: guest
                 password: guest
@@ -32,6 +32,6 @@ spring:
                 republishToDlq: true
   data:
     mongodb:
-      uri: mongodb://localhost:27017/portobello
+      uri: mongodb://mongodb:27017/portobello
 default:
   agency: 1001
