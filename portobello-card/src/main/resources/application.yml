@@ -1,0 +1,37 @@
+server:
+  port: 8084
+spring:
+  cloud:
+    stream:
+      bindings:
+        accountCreated:
+          destination: accountCreated.exchange
+          binder: rabbit
+          group: card-api
+      binders:
+        rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+                virtualhost: /
+      default:
+        contentType: application/json
+        rabbit:
+          bindings:
+            accountCreated:
+              consumer:
+                autoBindDlq: true
+                dlqTtl: 60000
+                dlqDeadLetterExchange:
+                requeueRejected: true
+                republishToDlq: true
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/portobello
+default:
+  agency: 1001
