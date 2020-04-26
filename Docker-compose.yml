@@ -1,0 +1,104 @@
+version: '3'
+services:
+  # MongoDB: https://hub.docker.com/_/mongo/
+  mongodb:
+    image: mongo:3
+    ports:
+      - "27017:27017"
+    expose: 
+      - "27017"
+    networks:
+      - pb-network      
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    expose:
+      - "5672"
+      - "15672"
+    volumes:
+      - ./rabbitmq-isolated.conf:/etc/rabbitmq/rabbitmq.config
+    networks:
+      - pb-network
+  elasticsearch:
+    build: elk/elasticsearch/
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+  logstash:
+    build: elk/logstash/
+    container_name: logstash
+    command: -f /etc/logstash/conf.d/
+    volumes:
+      - ./elk/logstash/config:/etc/logstash/conf.d
+    ports:
+      - "9999:9999"
+    links:
+      - elasticsearch
+  kibana:
+    build: elk/kibana/
+    container_name: kibana
+    volumes:
+      - ./elk/kibana/config/:/opt/kibana/config/
+    ports:
+      - "5601:5601"
+    links:
+      - elasticsearch
+  portobello-person:
+    build:
+      context: ./portobello-person
+    image: portobello-person
+    ports:
+      - "8081:8081"
+    expose:
+      - 8081
+    depends_on:
+      - rabbitmq
+      - mongodb
+    networks:
+      -  pb-network
+  portobello-account:
+    build:
+      context: ./portobello-account
+    image: portobello-account
+    ports:
+      - "8082:8082"
+    expose:
+      - 8082
+    depends_on:
+      - rabbitmq
+      - mongodb
+    networks:
+      -  pb-network
+  portobello-limit:
+    build:
+      context: ./portobello-limit
+    image: portobello-limit
+    ports:
+      - "8083:8083"
+    expose:
+      - 8083
+    depends_on:
+      - rabbitmq
+      - mongodb
+    networks:
+      -  pb-network
+  portobello-card:
+    build:
+      context: ./portobello-card
+    image: portobello-card
+    ports:
+      - "8084:8084"
+    expose:
+      - 8084
+    depends_on:
+      - rabbitmq
+      - mongodb
+    networks:
+      -  pb-network        
+networks:
+  pb-network:      
