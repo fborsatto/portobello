@@ -1,0 +1,10 @@
+<mongoChangeLog>
+    <changeSet changeId="ChangeSet-1">
+        <script>
+            db.scoreBoundary.insert({"initialBound" : 0, "finalBound" : 1, creditLimitValue : 0 , accountLimitValue : 0});
+            db.scoreBoundary.insert({"initialBound" : 2, "finalBound" : 5, creditLimitValue : 200 , accountLimitValue : 1000});
+            db.scoreBoundary.insert({"initialBound" : 6, "finalBound" : 8, creditLimitValue : 2000 , accountLimitValue : 2000});
+            db.scoreBoundary.insert({"initialBound" : 9, "finalBound" : 99, creditLimitValue : 15000 , accountLimitValue : 5000});
+       </script>
+    </changeSet>
+</mongoChangeLog>
