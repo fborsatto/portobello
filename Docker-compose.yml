@@ -29,6 +29,8 @@ services:
       - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    networks:
+      -  pb-network           
   logstash:
     build: elk/logstash/
     container_name: logstash
@@ -39,6 +41,8 @@ services:
       - "9999:9999"
     links:
       - elasticsearch
+    networks:
+      -  pb-network      
   kibana:
     build: elk/kibana/
     container_name: kibana
@@ -48,6 +52,8 @@ services:
       - "5601:5601"
     links:
       - elasticsearch
+    networks:
+      -  pb-network           
   portobello-person:
     build:
       context: ./portobello-person
@@ -59,6 +65,7 @@ services:
     depends_on:
       - rabbitmq
       - mongodb
+      - logstash
     networks:
       -  pb-network
   portobello-account:
@@ -72,6 +79,7 @@ services:
     depends_on:
       - rabbitmq
       - mongodb
+      - logstash
     networks:
       -  pb-network
   portobello-limit:
@@ -85,6 +93,7 @@ services:
     depends_on:
       - rabbitmq
       - mongodb
+      - logstash
     networks:
       -  pb-network
   portobello-card:
@@ -98,6 +107,7 @@ services:
     depends_on:
       - rabbitmq
       - mongodb
+      - logstash
     networks:
       -  pb-network        
 networks:
