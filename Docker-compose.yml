@@ -80,6 +80,8 @@ services:
       - rabbitmq
       - mongodb
       - logstash
+      - portobello-card 
+      - portobello-limit
     networks:
       -  pb-network
   portobello-limit:
