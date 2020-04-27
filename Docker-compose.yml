@@ -5,10 +5,10 @@ services:
     image: mongo:3
     ports:
       - "27017:27017"
-    expose: 
+    expose:
       - "27017"
     networks:
-      - pb-network      
+      - pb-network
   rabbitmq:
     image: "rabbitmq:3-management"
     ports:
@@ -30,7 +30,7 @@ services:
     environment:
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
     networks:
-      -  pb-network           
+      -  pb-network
   logstash:
     build: elk/logstash/
     container_name: logstash
@@ -42,7 +42,7 @@ services:
     links:
       - elasticsearch
     networks:
-      -  pb-network      
+      -  pb-network
   kibana:
     build: elk/kibana/
     container_name: kibana
@@ -53,7 +53,7 @@ services:
     links:
       - elasticsearch
     networks:
-      -  pb-network           
+      -  pb-network
   portobello-person:
     build:
       context: ./portobello-person
@@ -81,7 +81,7 @@ services:
       - mongodb
       - logstash
     networks:
-      -  pb-network
+      -  pb-network    
   portobello-limit:
     build:
       context: ./portobello-limit
@@ -93,7 +93,6 @@ services:
     depends_on:
       - rabbitmq
       - mongodb
-      - logstash
     networks:
       -  pb-network
   portobello-card:
@@ -107,8 +106,7 @@ services:
     depends_on:
       - rabbitmq
       - mongodb
-      - logstash
     networks:
-      -  pb-network        
+      -  pb-network
 networks:
   pb-network:      
